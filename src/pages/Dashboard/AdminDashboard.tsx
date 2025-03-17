@@ -33,7 +33,7 @@ export const AdminDashboard = () => {
     requests: count,
   }));
 
-  const performanceData = metrics.performanceMetrics.loadTime.map((time: number, index: number) => ({
+  const performanceData = metrics.performanceMetrics.loadTime.map((time, index) => ({
     time: index,
     loadTime: time,
     responseTime: metrics.performanceMetrics.responseTime[index],

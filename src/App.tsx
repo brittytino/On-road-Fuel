@@ -7,6 +7,11 @@ import { PrivateRoute } from './components/PrivateRoute';
 import { AdminDashboard } from './pages/Dashboard/AdminDashboard';
 import { UserDashboard } from './pages/Dashboard/UserDashboard';
 import { StationDashboard } from './pages/Dashboard/StationDashboard';
+import { UserManagement } from './pages/Admin/UserManagement';
+import { StationManagement } from './pages/Admin/StationManagement';
+import { RequestMonitoring } from './pages/Admin/RequestMonitoring';
+import { Analytics } from './pages/Admin/Analytics';
+import { SystemHealth } from './pages/Admin/SystemHealth';
 import { initializeStorage } from './utils/localStorage';
 
 // Initialize local storage with default data
@@ -14,40 +19,26 @@ initializeStorage();
 
 function App() {
   return (
-    <BrowserRouter>
-      <AuthProvider>
+    <AuthProvider>
+      <BrowserRouter>
         <Routes>
           <Route path="/login" element={<LoginForm />} />
-          <Route
-            path="/dashboard"
-            element={
-              <PrivateRoute>
-                <DashboardRouter />
-              </PrivateRoute>
-            }
-          />
+          <Route path="/dashboard/*" element={<PrivateRoute><DashboardRouter /></PrivateRoute>} />
           <Route path="/" element={<Navigate to="/dashboard" replace />} />
-          <Route
-            path="/unauthorized"
-            element={
-              <div className="min-h-screen flex items-center justify-center bg-gray-50">
-                <div className="text-center">
-                  <h1 className="text-4xl font-bold text-gray-800 mb-4">
-                    Unauthorized Access
-                  </h1>
-                  <p className="text-gray-600 mb-4">
-                    You don't have permission to access this page.
-                  </p>
-                  <button
-                    onClick={() => window.history.back()}
-                    className="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600"
-                  >
-                    Go Back
-                  </button>
-                </div>
+          <Route path="/unauthorized" element={
+            <div className="min-h-screen flex items-center justify-center bg-gray-50">
+              <div className="text-center">
+                <h1 className="text-4xl font-bold text-gray-800 mb-4">Unauthorized Access</h1>
+                <p className="text-gray-600 mb-4">You don't have permission to access this page.</p>
+                <button
+                  onClick={() => window.history.back()}
+                  className="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600"
+                >
+                  Go Back
+                </button>
               </div>
-            }
-          />
+            </div>
+          } />
         </Routes>
         <Toaster
           position="top-right"
@@ -65,21 +56,45 @@ function App() {
             },
           }}
         />
-      </AuthProvider>
-    </BrowserRouter>
+      </BrowserRouter>
+    </AuthProvider>
   );
 }
 
 const DashboardRouter: React.FC = () => {
   const { user } = useAuth();
 
-  switch (user?.role) {
+  if (!user) {
+    return <Navigate to="/login" replace />;
+  }
+
+  switch (user.role) {
     case 'admin':
-      return <AdminDashboard />;
+      return (
+        <Routes>
+          <Route index element={<AdminDashboard />} />
+          <Route path="users" element={<UserManagement />} />
+          <Route path="stations" element={<StationManagement />} />
+          <Route path="requests" element={<RequestMonitoring />} />
+          <Route path="analytics" element={<Analytics />} />
+          <Route path="system" element={<SystemHealth />} />
+          <Route path="*" element={<Navigate to="/dashboard" replace />} />
+        </Routes>
+      );
     case 'user':
-      return <UserDashboard />;
+      return (
+        <Routes>
+          <Route index element={<UserDashboard />} />
+          <Route path="*" element={<Navigate to="/dashboard" replace />} />
+        </Routes>
+      );
     case 'station':
-      return <StationDashboard />;
+      return (
+        <Routes>
+          <Route index element={<StationDashboard />} />
+          <Route path="*" element={<Navigate to="/dashboard" replace />} />
+        </Routes>
+      );
     default:
       return <Navigate to="/unauthorized" replace />;
   }

@@ -4,6 +4,7 @@ import { useAuth } from '../contexts/AuthContext';
 import {
   LogOut,
   Bell,
+  User as UserIcon,
   Settings,
   Home,
   Fuel,
