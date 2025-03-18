@@ -24,7 +24,7 @@ const INITIAL_VEHICLES: Vehicle[] = [
     id: nanoid(),
     type: 'Car',
     model: 'Maruti Swift',
-    registrationNumber: 'MH-01-AB-1234',
+    registrationNumber: 'TN-37-AB-1234',
     fuelType: 'Petrol',
     tankCapacity: 37
   },
@@ -32,7 +32,7 @@ const INITIAL_VEHICLES: Vehicle[] = [
     id: nanoid(),
     type: 'SUV',
     model: 'Tata Nexon',
-    registrationNumber: 'MH-01-CD-5678',
+    registrationNumber: 'TN-99-CD-5678',
     fuelType: 'Diesel',
     tankCapacity: 44
   }
@@ -45,7 +45,7 @@ const INITIAL_USERS: User[] = [
     password: 'admin123',
     role: 'admin',
     profile: {
-      fullName: 'Rajesh Kumar',
+      fullName: 'Senthil Kumar',
       email: 'admin@fueldelivery.com',
       phone: '+91 9876543210',
       vehicles: [],
@@ -67,8 +67,8 @@ const INITIAL_USERS: User[] = [
     password: 'user123',
     role: 'user',
     profile: {
-      fullName: 'Priya Sharma',
-      email: 'priya@example.com',
+      fullName: 'Karthikeyan Rajan',
+      email: 'karthik@example.com',
       phone: '+91 9876543211',
       vehicles: INITIAL_VEHICLES,
       preferences: {
@@ -88,11 +88,11 @@ const INITIAL_USERS: User[] = [
 const INITIAL_STATIONS: FuelStation[] = [
   {
     id: 1,
-    name: 'Indian Oil Station - Andheri',
+    name: 'Indian Oil - Gandhipuram',
     location: {
-      address: '123, SV Road, Andheri West, Mumbai - 400058',
-      latitude: 19.1136,
-      longitude: 72.8697
+      address: '100 Feet Road, Gandhipuram, Coimbatore - 641012',
+      latitude: 11.0168,
+      longitude: 76.9558
     },
     inventory: {
       Petrol: {
@@ -125,7 +125,7 @@ const INITIAL_STATIONS: FuelStation[] = [
         id: nanoid(),
         userId: INITIAL_USERS[1].id,
         rating: 4.5,
-        comment: 'Great service and always available',
+        comment: 'Excellent service and always available',
         timestamp: Date.now() - 86400000
       }
     ],
@@ -134,11 +134,11 @@ const INITIAL_STATIONS: FuelStation[] = [
   },
   {
     id: 2,
-    name: 'Bharat Petroleum - Bandra',
+    name: 'HP Petrol Pump - Peelamedu',
     location: {
-      address: '456, Linking Road, Bandra West, Mumbai - 400050',
-      latitude: 19.0596,
-      longitude: 72.8295
+      address: 'Avinashi Road, Peelamedu, Coimbatore - 641004',
+      latitude: 11.0234,
+      longitude: 77.0298
     },
     inventory: {
       Petrol: {
@@ -169,6 +169,120 @@ const INITIAL_STATIONS: FuelStation[] = [
     reviews: [],
     isActive: true,
     managerId: nanoid()
+  },
+  {
+    id: 3,
+    name: 'Bharat Petroleum - Singanallur',
+    location: {
+      address: 'Trichy Road, Singanallur, Coimbatore - 641005',
+      latitude: 11.0120,
+      longitude: 77.0288
+    },
+    inventory: {
+      Petrol: {
+        available: 6000,
+        capacity: 12000,
+        price: 102.4,
+        threshold: 1200
+      },
+      Diesel: {
+        available: 4000,
+        capacity: 9000,
+        price: 89.7,
+        threshold: 900
+      },
+      CNG: {
+        available: 2500,
+        capacity: 6000,
+        price: 76.3,
+        threshold: 600
+      }
+    },
+    operatingHours: {
+      open: '24 Hours',
+      close: '24 Hours'
+    },
+    services: ['Car Wash', 'Air Check', 'Mini Mart', 'Battery Service'],
+    ratings: 4.6,
+    reviews: [],
+    isActive: true,
+    managerId: nanoid()
+  },
+  {
+    id: 4,
+    name: 'Indian Oil - Saravanampatti',
+    location: {
+      address: 'Sathy Road, Saravanampatti, Coimbatore - 641035',
+      latitude: 11.0791,
+      longitude: 76.9989
+    },
+    inventory: {
+      Petrol: {
+        available: 3500,
+        capacity: 7000,
+        price: 102.5,
+        threshold: 700
+      },
+      Diesel: {
+        available: 2800,
+        capacity: 5600,
+        price: 89.8,
+        threshold: 560
+      },
+      CNG: {
+        available: 1800,
+        capacity: 4000,
+        price: 76.5,
+        threshold: 400
+      }
+    },
+    operatingHours: {
+      open: '06:00',
+      close: '22:00'
+    },
+    services: ['Car Wash', 'Tire Service', 'Oil Change'],
+    ratings: 4.4,
+    reviews: [],
+    isActive: true,
+    managerId: nanoid()
+  },
+  {
+    id: 5,
+    name: 'HP Petrol Station - R.S. Puram',
+    location: {
+      address: 'TV Swamy Road, R.S. Puram, Coimbatore - 641002',
+      latitude: 11.0055,
+      longitude: 76.9537
+    },
+    inventory: {
+      Petrol: {
+        available: 4500,
+        capacity: 9000,
+        price: 102.3,
+        threshold: 900
+      },
+      Diesel: {
+        available: 3500,
+        capacity: 7000,
+        price: 89.6,
+        threshold: 700
+      },
+      CNG: {
+        available: 2000,
+        capacity: 5000,
+        price: 76.2,
+        threshold: 500
+      }
+    },
+    operatingHours: {
+      open: '05:30',
+      close: '22:30'
+    },
+    services: ['Car Wash', 'Air Check', 'Battery Service', 'Mini Mart'],
+    ratings: 4.7,
+    reviews: [],
+    isActive: true,
+    managerId: nanoid()
   }
 ];
 
@@ -182,7 +296,7 @@ const INITIAL_REQUESTS: FuelRequest[] = [
     quantity: 20,
     urgencyLevel: 'medium',
     status: 'pending',
-    price: 102.5,
+    price: 102.5 * 20,
     createdAt: Date.now() - 3600000,
     updatedAt: Date.now() - 3600000,
     notes: 'Need fuel by evening',
