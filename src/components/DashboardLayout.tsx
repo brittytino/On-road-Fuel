@@ -1,10 +1,9 @@
 import React from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 import {
   LogOut,
   Bell,
-  User as UserIcon,
   Settings,
   Home,
   Fuel,
@@ -13,6 +12,9 @@ import {
   AlertTriangle,
   Sun,
   Moon,
+  BarChart,
+  Activity,
+  Truck,
 } from 'lucide-react';
 import { getNotifications } from '../utils/localStorage';
 import { Button } from './ui/button';
@@ -47,6 +49,7 @@ const NavItem: React.FC<NavItemProps> = ({ icon, label, onClick, active }) => (
 export const DashboardLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const { user, logout } = useAuth();
   const navigate = useNavigate();
+  const location = useLocation();
   const notifications = user ? getNotifications(user.id) : [];
   const unreadCount = notifications.filter((n) => !n.read).length;
   const [theme, setTheme] = React.useState<'light' | 'dark'>('light');
@@ -71,41 +74,51 @@ export const DashboardLayout: React.FC<{ children: React.ReactNode }> = ({ child
         {
           icon: <Users className="h-5 w-5" />,
           label: 'Users',
-          path: '/users',
+          path: '/dashboard/users',
         },
         {
           icon: <Fuel className="h-5 w-5" />,
           label: 'Stations',
-          path: '/stations',
+          path: '/dashboard/stations',
         },
         {
           icon: <FileText className="h-5 w-5" />,
-          label: 'Reports',
-          path: '/reports',
+          label: 'Requests',
+          path: '/dashboard/requests',
+        },
+        {
+          icon: <BarChart className="h-5 w-5" />,
+          label: 'Analytics',
+          path: '/dashboard/analytics',
+        },
+        {
+          icon: <Activity className="h-5 w-5" />,
+          label: 'System Health',
+          path: '/dashboard/system',
         },
       ],
       user: [
         {
-          icon: <Fuel className="h-5 w-5" />,
+          icon: <Truck className="h-5 w-5" />,
           label: 'Request Fuel',
-          path: '/request',
+          path: '/dashboard/request',
         },
         {
           icon: <FileText className="h-5 w-5" />,
           label: 'My Requests',
-          path: '/my-requests',
+          path: '/dashboard/my-requests',
         },
       ],
       station: [
         {
           icon: <AlertTriangle className="h-5 w-5" />,
           label: 'Pending Requests',
-          path: '/pending',
+          path: '/dashboard/pending',
         },
         {
           icon: <Fuel className="h-5 w-5" />,
           label: 'Inventory',
-          path: '/inventory',
+          path: '/dashboard/inventory',
         },
       ],
     };

@@ -91,7 +91,6 @@ export interface FuelRequest {
   notes: string;
   rating?: number;
   review?: string;
-  paymentMethod: string;
 }
 
 export interface Notification {

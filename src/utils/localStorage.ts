@@ -187,8 +187,7 @@ const INITIAL_REQUESTS: FuelRequest[] = [
     updatedAt: Date.now() - 3600000,
     notes: 'Need fuel by evening',
     rating: undefined,
-    review: undefined,
-    paymentMethod: 'UPI'
+    review: undefined
   }
 ];
 

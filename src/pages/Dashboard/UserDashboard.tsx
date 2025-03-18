@@ -10,7 +10,7 @@ import { getStations, saveRequest, getRequests } from '../../utils/localStorage'
 import { sendWhatsAppMessage } from '../../services/whatsapp';
 import { format } from 'date-fns';
 import { v4 as uuidv4 } from 'uuid';
-import { FuelType, FuelRequest } from '@/types';
+import { FuelType } from '@/types';
 
 export const UserDashboard = () => {
   const { user } = useAuth();
@@ -35,12 +35,12 @@ export const UserDashboard = () => {
       const vehicle = user.profile.vehicles.find(v => v.id === selectedVehicle);
       if (!vehicle) return;
 
-      const newRequest: FuelRequest = {
+      const newRequest = {
         id: uuidv4(),
         userId: user.id,
         stationId: station.id,
         vehicleId: vehicle.id,
-        fuelType: fuelType as FuelType,
+        fuelType,
         quantity: parseFloat(quantity),
         urgencyLevel: 'medium',
         status: 'pending',

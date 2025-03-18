@@ -12,6 +12,8 @@ import { StationManagement } from './pages/Admin/StationManagement';
 import { RequestMonitoring } from './pages/Admin/RequestMonitoring';
 import { Analytics } from './pages/Admin/Analytics';
 import { SystemHealth } from './pages/Admin/SystemHealth';
+import { RequestFuel } from './pages/User/RequestFuel';
+import { MyRequests } from './pages/User/MyRequests';
 import { initializeStorage } from './utils/localStorage';
 
 // Initialize local storage with default data
@@ -85,6 +87,8 @@ const DashboardRouter: React.FC = () => {
       return (
         <Routes>
           <Route index element={<UserDashboard />} />
+          <Route path="request" element={<RequestFuel />} />
+          <Route path="my-requests" element={<MyRequests />} />
           <Route path="*" element={<Navigate to="/dashboard" replace />} />
         </Routes>
       );
