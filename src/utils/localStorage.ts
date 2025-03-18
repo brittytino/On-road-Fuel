@@ -46,7 +46,7 @@ const INITIAL_USERS: User[] = [
     role: 'admin',
     profile: {
       fullName: 'Senthil Kumar',
-      email: 'admin@fueldelivery.com',
+      email: 'admin@gmail.com',
       phone: '+91 9876543210',
       vehicles: [],
       preferences: {
@@ -68,7 +68,7 @@ const INITIAL_USERS: User[] = [
     role: 'user',
     profile: {
       fullName: 'Karthikeyan Rajan',
-      email: 'karthik@example.com',
+      email: 'karthik@gmail.com',
       phone: '+91 9876543211',
       vehicles: INITIAL_VEHICLES,
       preferences: {
