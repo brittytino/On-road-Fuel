@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -9,7 +9,7 @@ import { getStations, saveRequest } from '@/utils/localStorage';
 import { sendWhatsAppMessage } from '@/services/whatsapp';
 import { v4 as uuidv4 } from 'uuid';
 import { FuelType } from '@/types';
-import { MapPin, Clock, CreditCard, Car } from 'lucide-react';
+import { MapPin, Clock, CreditCard, Car, Navigation } from 'lucide-react';
 
 export const RequestFuel = () => {
   const { user } = useAuth();
@@ -19,8 +19,34 @@ export const RequestFuel = () => {
   const [selectedVehicle, setSelectedVehicle] = useState(user?.profile.vehicles[0]?.id || '');
   const [paymentMethod, setPaymentMethod] = useState('UPI');
   const [loading, setLoading] = useState(false);
+  const [userLocation, setUserLocation] = useState({
+    latitude: 0,
+    longitude: 0,
+    address: ''
+  });
 
   const stations = getStations();
+
+  useEffect(() => {
+    // Get user's current location
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(async (position) => {
+        const { latitude, longitude } = position.coords;
+        setUserLocation(prev => ({ ...prev, latitude, longitude }));
+        
+        // Get address from coordinates using reverse geocoding
+        try {
+          const response = await fetch(
+            `https://nominatim.openstreetmap.org/reverse?format=json&lat=${latitude}&lon=${longitude}`
+          );
+          const data = await response.json();
+          setUserLocation(prev => ({ ...prev, address: data.display_name }));
+        } catch (error) {
+          console.error('Error getting address:', error);
+        }
+      });
+    }
+  }, []);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -47,6 +73,11 @@ export const RequestFuel = () => {
         updatedAt: Date.now(),
         notes: '',
         paymentMethod,
+        userLocation: {
+          latitude: userLocation.latitude,
+          longitude: userLocation.longitude,
+          address: userLocation.address
+        }
       };
 
       saveRequest(newRequest);
@@ -56,9 +87,10 @@ export const RequestFuel = () => {
         customerName: user.profile.fullName,
         fuelType,
         quantity,
-        location: station.location.address,
+        location: userLocation.address || 'Location pending',
         vehicle: `${vehicle.model} (${vehicle.registrationNumber})`,
         paymentMethod,
+        stationName: station.name
       });
 
       toast.success('Fuel request submitted successfully!');
@@ -78,6 +110,16 @@ export const RequestFuel = () => {
           <CardTitle>Request Fuel Delivery</CardTitle>
         </CardHeader>
         <CardContent>
+          {userLocation.address && (
+            <div className="mb-6 p-4 bg-blue-50 rounded-lg flex items-center gap-3">
+              <Navigation className="h-5 w-5 text-blue-500" />
+              <div>
+                <p className="text-sm font-medium text-blue-700">Your Current Location</p>
+                <p className="text-sm text-blue-600">{userLocation.address}</p>
+              </div>
+            </div>
+          )}
+
           <form onSubmit={handleSubmit} className="space-y-6">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div className="space-y-2">
@@ -102,7 +144,7 @@ export const RequestFuel = () => {
               <div className="space-y-2">
                 <label className="text-sm font-medium flex items-center gap-2">
                   <MapPin className="h-4 w-4" />
-                  Select Station
+                  Select Nearest Station
                 </label>
                 <Select
                   value={selectedStation}
@@ -113,7 +155,7 @@ export const RequestFuel = () => {
                   <option value="">Select a station</option>
                   {stations.map(station => (
                     <option key={station.id} value={station.id}>
-                      {station.name}
+                      {station.name} ({station.location.address})
                     </option>
                   ))}
                 </Select>

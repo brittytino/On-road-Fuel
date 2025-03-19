@@ -1,9 +1,17 @@
+import { ReactNode } from 'react';
+
 export type Role = 'admin' | 'user' | 'station';
 export type FuelType = 'Petrol' | 'Diesel' | 'CNG';
 export type RequestStatus = 'pending' | 'approved' | 'rejected' | 'fulfilled';
 export type UrgencyLevel = 'low' | 'medium' | 'high' | 'critical';
 export type PaymentMethod = 'UPI' | 'card' | 'cash' | 'wallet';
 export type ServiceType = 'Car Wash' | 'Tire Service' | 'Oil Change' | 'Battery Service' | 'Air Check' | 'Mini Mart';
+
+export interface UserLocation {
+  latitude: number;
+  longitude: number;
+  address: string;
+}
 
 export interface User {
   id: string;
@@ -91,6 +99,8 @@ export interface FuelRequest {
   notes: string;
   rating?: number;
   review?: string;
+  paymentMethod: PaymentMethod;
+  userLocation?: UserLocation;
 }
 
 export interface Notification {

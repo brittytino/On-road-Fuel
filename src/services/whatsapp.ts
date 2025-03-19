@@ -1,11 +1,24 @@
-export const sendWhatsAppMessage = (fuelRequest: any) => {
+interface FuelRequestMessage {
+  customerName: string;
+  fuelType: string;
+  quantity: string;
+  location: string;
+  vehicle: string;
+  paymentMethod: string;
+  stationName: string;
+}
+
+export const sendWhatsAppMessage = (fuelRequest: FuelRequestMessage) => {
   const message = encodeURIComponent(`
 🛢️ *New Fuel Request*
 
 Customer: ${fuelRequest.customerName}
 Fuel Type: ${fuelRequest.fuelType}
 Quantity: ${fuelRequest.quantity}L
-Location: ${fuelRequest.location}
+Delivery Location: ${fuelRequest.location}
+Vehicle: ${fuelRequest.vehicle}
+Payment Method: ${fuelRequest.paymentMethod}
+Selected Station: ${fuelRequest.stationName}
 Status: Pending
 
 Thank you for using our service! We'll process your request shortly.`);
